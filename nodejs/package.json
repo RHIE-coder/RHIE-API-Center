@@ -4,12 +4,13 @@
   "description": "implements api server frames and flows",
   "main": "index.js",
   "scripts": {
-    "start": "node app/app.js",
-    "dev": "nodemon --watch 'app/**/*.js' --exec \"node\" app/app.js"
+    "start:apis": "node apis/app.js",
+    "dev:apis": "nodemon --watch 'apis/**/*.js' --exec \"node\" apis/app.js"
   },
   "author": "RHIE-coder",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.27.2",
     "cookie-parser": "^1.4.6",
     "ejs": "^3.1.8",
     "express": "^4.18.1"

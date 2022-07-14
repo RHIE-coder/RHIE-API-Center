@@ -2,13 +2,14 @@ const router = require('express').Router();
 
 module.exports = {
     routers,
+    path: "/api/v1/member",
 }
 
 function routers() {
 
-    // 메인 페이지
+    // 전체보기
     router.get('/',(req, res) => {
-        res.render("homepage.html")
+        
     });
 
     return router

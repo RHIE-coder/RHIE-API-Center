@@ -48,4 +48,5 @@ const payloadBase64 = base64UrlEncode(payload);
 
 // console.log(base64UrlDecode("pPygHTH2kx4y2yaJaZOps0djmQdpCr2d5hTG9pfIj_g"))
 
+const randomStringSource = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 

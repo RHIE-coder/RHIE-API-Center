@@ -5,6 +5,7 @@ const path = require('path');
 const serverConfig = require('./config/server');
 const cookieParser = require('cookie-parser');
 const router_loader = require('./routes/route_loader');
+const { MemoryDB } = require("./database/memory");
 
 // View Setting
 app.set('view engine', 'html');
@@ -30,6 +31,9 @@ app.use("/", (req, res) => {
 
 // Router Mapping
 router_loader.init(app);
+
+// Member DB Setting
+app.set("memory", new MemoryDB())
 
 // Running Server
 http.createServer(app).listen(serverConfig.port, () => {
