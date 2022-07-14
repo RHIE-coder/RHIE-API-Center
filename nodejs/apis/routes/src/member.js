@@ -9,8 +9,8 @@ function routers() {
 
     // member 생성
     router.get('/:username',(req, res) => {
-        req.app.get("memory")
-        req.app.set("req.params.username", req.params.username)
+        const memory = req.app.get("memory");
+        req.app.set(`${req.params.username}`, memory)
         res.send("hello")
     });
 
@@ -20,4 +20,3 @@ function routers() {
 
     return router
 }
-

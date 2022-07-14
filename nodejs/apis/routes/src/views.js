@@ -1,15 +1,16 @@
 const router = require('express').Router();
 
+const renderList = require("fs").readdirSync(require("path").join("..","..","views"))
+
 module.exports = {
     routers,
 }
 
 function routers() {
 
-    // 메인 페이지
-    router.get('/',(req, res) => {
-        res.render("home.html")
-    });
+    for(let i = 0; i < renderList.length; i++){
+        console.log(renderList[i])
+    }
 
     return router
 }

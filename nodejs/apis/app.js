@@ -24,7 +24,8 @@ app.use(cookieParser());
 app.use("/", (req, res) => {
     console.log({
         method: req.method,
-        url: req.url
+        url: req.url,
+        ip: req.ip,
     });
     req.next()
 });
