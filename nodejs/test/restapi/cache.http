@@ -1,0 +1,38 @@
+POST http://127.0.0.1:6000
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "updateDB",
+    "params": [1, {
+        "a": 10,
+        "b": "hello"
+    }]
+}
+
+###
+
+POST http://127.0.0.1:6000
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "readDB",
+    "params": ["owen"]
+}
+
+###
+
+POST http://127.0.0.1:6000
+Content-Type: application/json
+
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "updateDB",
+    "params": [1, {
+        "a": 10
+    }]
+}

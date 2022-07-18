@@ -1,0 +1,55 @@
+POST http://127.0.0.1:3010/member HTTP/1.1
+Content-Type: application/json
+
+{
+    "username":"rhie@example.com",
+    "password":"1234",
+    "nickname":"owen",
+    "age":30
+}
+
+
+###
+
+GET http://127.0.0.1:3010/member HTTP/1.1
+Content-Type: application/json
+
+{
+    "username":"rhie@example.com",
+    "password":"1234"
+}
+
+###
+
+PUT http://127.0.0.1:3010/member HTTP/1.1
+Content-Type: application/json
+
+{
+    "username":"rhie@example.com",
+    "password":"1234",
+    "newPassword":"12341234",
+    "nickname":"owen-rhie",
+    "age":20
+}
+
+###
+
+DELETE http://127.0.0.1:3010/member HTTP/1.1
+Content-Type: application/json
+
+{
+    "username":"rhie@example.com",
+    "password":"12341234"
+}
+
+
+###
+
+POST http://127.0.0.1:3010/member/key HTTP/1.1
+Content-Type: application/json
+
+{
+    "username":"rhie@example.com",
+    "password":"1234",
+    "age":30
+}
