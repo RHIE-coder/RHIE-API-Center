@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { JsonRpcRequester, Crypto } = require('../../../../common/lib/utils')
+const { JsonRpcRequester, Crypto } = require('../../../../common/lib/utils');
+const { validate, ResponseBody } = require('../../../../common/lib/parser');
 
 module.exports = {
     routers,
@@ -12,127 +13,183 @@ function routers() {
 
     // member 생성
     router.post('/', async (req, res) => {
+        const resBody = new ResponseBody();
+        const isValid = await validate(req.body)
+            .notNull()
+            .jsonKeys([
+                'username',
+                'password',
+                'nickname',
+                'age',
+            ])
 
-        let resBody = {}
+        if (isValid) {
+            const isExist = (await rpc.request({
+                method: 'readDB',
+                params: [req.body.username]
+            })).result;
 
-        const data = {
-            ...req.body
-        }
+            if (isExist) {
+                resBody.error('already exists')
+            } else {
 
-        let resultJson = (await rpc.request({
-            method:'readDB',
-            params: [data.username]
-        })).result;
+                const data = {
+                    ...req.body,
+                    createdDate: new Date()
+                };
 
-        if(resultJson === 'no data') {
-            data['createdDate'] = new Date();
+                const resultMsg = (await rpc.request({
+                    method: 'updateDB',
+                    params: [
+                        req.body.username,
+                        data
+                    ]
+                })).result
 
-            await rpc.request({
-                method:'updateDB',
-                params: [
-                    data.username,
-                    data
-                ]
-            })
+                if (resultMsg === 'success') {
+                    resBody.success(data)
+                } else {
+                    resBody.error('fail from rpc server')
+                }
 
-            resBody['result'] = 200;
+            }
         } else {
-            resBody['result'] = 401;
-            resBody['message'] = 'already exists'
+            resBody.error('invalid request body')
         }
 
-        res.send(resBody);
+        res.send(resBody.getBody());
     });
-    
+
     // member 조회
     router.get('/', async (req, res) => {
-        const username = req.body.username;
-        const password = req.body.password;
+        const resBody = new ResponseBody();
+        const isValid = await validate(req.body)
+            .notNull()
+            .jsonKeys([
+                'username',
+                'password',
+            ])
 
-        let resultJson = (await rpc.request({
-            method:'readDB',
-            params: [username]
-        })).result;
+        if (isValid) {
+            const member = (await rpc.request({
+                method: 'readDB',
+                params: [req.body.username]
+            })).result;
 
-
-        if(username === resultJson.username && password === resultJson.password) {
-            delete resultJson['password']
-        } else {
-           resultJson = { result: 401} 
-        }
-
-        res.send(resultJson);
-    });
-
-    // member 수정
-    router.put('/', async (req, res) => {
-        let resBody = {}
-        const username = req.body.username;
-        const password = req.body.password;
-
-        let resultJson = (await rpc.request({
-            method:'readDB',
-            params: [username]
-        })).result;
-
-        if(username === resultJson.username && password === resultJson.password) {
-
-            if(req.body.newPassword) {
-                resultJson.password = req.body.newPassword;
+            if(member){
+                if (req.body.username === member.username && req.body.password === member.password) {
+                    delete member['password']
+                    resBody.success(member);
+                } else {
+                    resBody.error('incorrect username or password ')
+                }
+            } else {
+                resBody.error('not exists');
             }
 
-            resultJson['updatedDate'] = new Date();
-
-            await rpc.request({
-                method:'update',
-                params: [
-                    username,
-                    resultJson
-                ]
-            })
-
-            resBody = { result: 200 }
         } else {
-            resBody = { result: 401 } 
+            resBody.error('invalid request body')
         }
 
-        res.send(resBody);
-    });
-
+        res.send(resBody.getBody());
     
+    });
+
     // member 수정
     router.put('/', async (req, res) => {
-        let resBody = {}
-        const username = req.body.username;
-        const password = req.body.password;
 
-        let resultJson = (await rpc.request({
-            method:'readDB',
-            params: [username]
-        })).result;
+        const resBody = new ResponseBody();
+        const isValid = await validate(req.body)
+            .notNull()
+            .jsonKeys([
+                'username',
+                'password',
+            ])
 
-        if(username === resultJson.username && password === resultJson.password) {
+        if (isValid) {
+            const member = (await rpc.request({
+                method: 'readDB',
+                params: [req.body.username]
+            })).result;
 
-            if(req.body.newPassword) {
-                resultJson.password = req.body.newPassword;
+            if(member){
+                if (req.body.username === member.username && req.body.password === member.password) {
+                    if(req.body.newPassword){
+                        req.body.password = req.body.newPassword;
+                        delete req.body.newPassword;
+                    }
+    
+                    const data = {
+                        ...req.body,
+                        updatedDate: new Date()
+                    };
+    
+                    const resultMsg = (await rpc.request({
+                        method: 'updateDB',
+                        params: [
+                            req.body.username,
+                            data
+                        ]
+                    })).result;
+    
+                    if (resultMsg === 'success') {
+                        resBody.success(resultMsg)
+                    } else {
+                        resBody.error('fail from rpc server')
+                    }
+                    
+                } else {
+                    resBody.error('incorrect username or password ')
+                }
+            } else {
+                resBody.error('not exists');
             }
 
-            resultJson['updatedDate'] = new Date();
-
-            await rpc.request({
-                method:'update',
-                params: [
-                    username,
-                    resultJson
-                ]
-            })
-
-            resBody = { result: 200 }
         } else {
-            resBody = { result: 401 } 
+            resBody.error('invalid request body')
         }
 
-        res.send(resBody);
+        res.send(resBody.getBody());
+    });
+
+
+    // member 삭제
+    router.delete('/', async (req, res) => {
+
+        const resBody = new ResponseBody();
+        const isValid = await validate(req.body)
+            .notNull()
+            .jsonKeys([
+                'username',
+                'password',
+            ])
+
+        if (isValid) {
+            const member = (await rpc.request({
+                method: 'readDB',
+                params: [req.body.username]
+            })).result;
+
+            if(member){
+                const resultMsg = (await rpc.request({
+                    method:'removeDB',
+                    params:[req.body.username]
+                })).result;
+
+                if (resultMsg === 'success') {
+                    resBody.success(resultMsg)
+                } else {
+                    resBody.error('fail from rpc server')
+                }
+            } else {
+                resBody.error('not exists');
+            }
+
+        } else {
+            resBody.error('invalid request body')
+        }
+
+        res.send(resBody.getBody());
     });
 
     return router

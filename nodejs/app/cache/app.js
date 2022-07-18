@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http')
-const serverConfig = require('../../config/cache-server');
+const serverConfig = require('../../common/config/cache-server');
 const jsonRpcParser = require('./module/json-rpc-parser')
 const { MemoryDB } = require("./database/memory")
 
@@ -48,7 +48,7 @@ app.post('/', jsonRpcParser.requestFilter({
             result = await memDB.get(params[0])
             isSuccessToInvoke = true;
         } else if (method === 'removeDB') {
-            result= await memDB.remove(params[0]) ? 'success' : 'fail';
+            result = await memDB.remove(params[0]) ? 'success' : 'fail';
             isSuccessToInvoke = true;
         } else {
             resBody = jsonRpcParser.getResErrorFrame('-32601', "Method not found")

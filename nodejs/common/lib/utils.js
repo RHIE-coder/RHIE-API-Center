@@ -40,46 +40,6 @@ class JsonRpcRequester {
     }
 }
 
-class RequestVaildator {
-
-    constructor() {
-
-    }
-
-    
-}
-
-class ResponseGenerator {
-
-    #resData
-
-    static Status = {
-        SUCCESS: "success",
-        ERROR: "success",
-    }
-
-    constructor(){
-        this.#resData = {
-            status: null,
-            data: null,
-            message: null,
-        }
-    }
-
-
-    
-    error(message){
-        this.#resData.status = Status.SUCCESS;
-        this.#resData.message = message;
-        return this;
-    }
-
-    done() {
-        return this.#resData;
-    }
-
-}
-
 module.exports = {
     Crypto,
     JsonRpcRequester

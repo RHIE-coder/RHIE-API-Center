@@ -26,7 +26,7 @@ function getResErrorFrame(code, message){
 function getResResultFrame(result){
     return {
         jsonrpc: '2.0',
-        result: result ?? "no data",
+        result: result ?? null,
     }
 }
 
