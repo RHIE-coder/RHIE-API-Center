@@ -57,7 +57,7 @@ function routers() {
             resBody.error('invalid request body')
         }
 
-        res.send(resBody.getBody());
+        res.send(resBody.json());
     });
 
     // member 조회
@@ -91,7 +91,7 @@ function routers() {
             resBody.error('invalid request body')
         }
 
-        res.send(resBody.getBody());
+        res.send(resBody.json());
     
     });
 
@@ -120,6 +120,7 @@ function routers() {
                     }
     
                     const data = {
+                        ...member,
                         ...req.body,
                         updatedDate: new Date()
                     };
@@ -149,7 +150,7 @@ function routers() {
             resBody.error('invalid request body')
         }
 
-        res.send(resBody.getBody());
+        res.send(resBody.json());
     });
 
 
@@ -189,7 +190,7 @@ function routers() {
             resBody.error('invalid request body')
         }
 
-        res.send(resBody.getBody());
+        res.send(resBody.json());
     });
 
     return router

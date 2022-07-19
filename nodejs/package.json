@@ -7,7 +7,9 @@
     "start:cache": "node app/cache/app.js",
     "dev:cache": "nodemon -w ./app/cache/**/*.js -x \"node ./app/cache/app.js\"",
     "start:auth": "node app/auth/app.js",
-    "dev:auth": "nodemon -w ./app/auth/**/*.js -x \"node ./app/auth/app.js\""
+    "dev:auth": "nodemon -w ./app/auth/**/*.js -x \"node ./app/auth/app.js\"",
+    "start:api": "node app/api/app.js",
+    "dev:api": "nodemon -w ./app/api/**/*.js -x \"node ./app/api/app.js\""
   },
   "author": "RHIE-coder",
   "license": "MIT",

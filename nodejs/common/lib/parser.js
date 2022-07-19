@@ -101,6 +101,15 @@ class Validator {
         return this;
     }
 
+    same(value) {
+        this.#resultStream.push(this.target === value);
+        return this;
+    }
+
+    isValid() {
+        return this.#resultStream.every(trueOrFalse => trueOrFalse === true)
+    }
+
     async done(){
         return this.#resultStream.every(trueOrFalse => trueOrFalse === true)
     }
@@ -129,7 +138,7 @@ class ResponseBody {
         this.#resData.message = 200;
     }
 
-    getBody(){
+    json(){
         return this.#resData;
     }
 }
