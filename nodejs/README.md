@@ -7,6 +7,30 @@
 
 # Getting Started
 
+## - Cache Server
+
 ```bash
-npm start
+npm run start:cache
 ```
+
+## - Auth Server
+
+```bash
+npm run start:auth
+```
+
+## - Api Server
+
+```bash
+npm run start:api
+```
+
+## - Client
+
+ - see `client/` directory
+
+ <br><br><br><br><br>
+
+# High-Level Architecture
+
+![](../md/architecture.png)

@@ -17,6 +17,7 @@ class Crypto {
 }
 
 class JsonRpcRequester {
+
     #baseURL
     #axios
 
@@ -40,18 +41,6 @@ class JsonRpcRequester {
     }
 }
 
-class ModuleArguments {
-
-    #argSet
-
-    constructor(){
-        this.#argSet = {}
-    }
-
-    option(opt){
-        
-    }
-}
 
 module.exports = {
     Crypto,

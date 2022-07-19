@@ -21,7 +21,7 @@ function routers() {
                 'password',
                 'nickname',
                 'age',
-            ])
+            ]).done();
 
         if (isValid) {
             const isExist = (await rpc.request({

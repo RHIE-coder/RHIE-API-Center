@@ -6,9 +6,7 @@ const jsonRpcParser = require('./module/json-rpc-parser')
 const { MemoryDB } = require("./database/memory")
 
 // Parsing
-// app.use(express.urlencod ed({ extended: true }));
 app.use(express.json());
-// app.use(cookieParser());
 
 // Request Logging on Console
 app.use('/', (req, res) => {

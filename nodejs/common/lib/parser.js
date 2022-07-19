@@ -145,6 +145,7 @@ class ResponseBody {
     json(){
         return this.#resData;
     }
+
 }
 
 module.exports = {
