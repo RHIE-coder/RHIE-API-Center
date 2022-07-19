@@ -65,3 +65,13 @@ Content-Type: application/json
 }
 
 ###
+
+GET http://127.0.0.1:3020/api/v1/math/sum HTTP/1.1
+Content-Type: application/json
+X-Timestamp: 1658205613445
+Authorization: 438ba548af043697df3a985e173e3e68e9b9f421d9a76ea9f6dfcc003b5c1eb3
+
+{
+    "username": "rhie@example.com",
+    "numbers": [1, 2, 3, 4, 5]
+}

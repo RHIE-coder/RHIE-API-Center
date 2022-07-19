@@ -40,6 +40,19 @@ class JsonRpcRequester {
     }
 }
 
+class ModuleArguments {
+
+    #argSet
+
+    constructor(){
+        this.#argSet = {}
+    }
+
+    option(opt){
+        
+    }
+}
+
 module.exports = {
     Crypto,
     JsonRpcRequester

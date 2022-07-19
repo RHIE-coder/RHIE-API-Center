@@ -6,13 +6,15 @@ class Policy {
     #setting
 
     constructor(setting){
+
         const isValid = [
             validate(setting).notNull().type(Object).isValid(),
             validate(setting.validTime).notNull().type(Number).isValid(),
             validate(setting.secretKey).notNull().type(String).isValid(),
             validate(setting.timestampName).notNull().type(String).isValid(),
+            validate(setting.identity).notNull().type(String).isValid(),
         ].every(tureOrFalse=>tureOrFalse===true);
-
+        
         if(!isValid) {
             throw new TypeError('policy arugment error');
         }
@@ -29,6 +31,10 @@ class Policy {
 
     getTimestampName(){
         return this.#setting.timestampName;
+    }
+
+    getIdentity(){
+        return this.#setting.identity;
     }
 }
 
@@ -54,7 +60,8 @@ class AuthToken {
     }
 
     timestamp(timestamp){
-        if(!validate(timestamp).same(this.#policy.getTimestampName()).isValid()){
+        const validateTarget = timestamp[this.#policy.getTimestampName()];
+        if(!validate(validateTarget).notNull().isValid()){
             throw new TypeError('violate policy')
         }
         this.#timestamp = timestamp[this.#policy.getTimestampName()];
@@ -62,7 +69,7 @@ class AuthToken {
     }
 
     sign(){
-        const data = this.#payload + ', ' + this.#timestamp;
+        const data = this.#payload + ', ' + this.#timestamp + ', ' + this.#policy.getIdentity();
         const secretKey = this.#policy.getSecretKey()
         const hmacSha256 = Crypto.createHmacSha256({
             secretKey,
@@ -75,7 +82,7 @@ class AuthToken {
     }
 
     verify(signature){
-        const isExceedTime = (this.#timestamp + this.#policy.validTime) < Date.now();
+        const isExceedTime = ((Date.now() - this.#timestamp) > this.#policy.getValidTime());
         const isSameSign = this.#signature === signature;
         return (isSameSign && !isExceedTime)
     }

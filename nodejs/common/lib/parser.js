@@ -40,15 +40,15 @@ class Validator {
         let typeName;
     
         if (typeExpected === Boolean) {
-            typeName = typeof Boolean
+            typeName = typeof true;
         } else if (typeExpected === Number) {
-            typeName = typeof Number
+            typeName = typeof 10;
         } else if (typeExpected === BigInt) {
-            typeName = typeof BigInt
+            typeName = typeof BigInt(10);
         } else if (typeExpected === String) {
-            typeName = typeof String
+            typeName = typeof 'str';
         } else if (typeExpected === Symbol) {
-            typeName = typeof Symbol
+            typeName = typeof Symbol();
         } else {
             typeName = null;
         }
@@ -58,9 +58,8 @@ class Validator {
 
     type(typeExpected) {
         const primitiveString = this.checkPrimitive(typeExpected)
-
         if(primitiveString) {
-            this.#resultStream.push(this.#target === primitiveString)
+            this.#resultStream.push(typeof this.#target === primitiveString)
         } else {
             this.#resultStream.push(this.#target instanceof typeExpected)
         }
@@ -103,6 +102,11 @@ class Validator {
 
     same(value) {
         this.#resultStream.push(this.target === value);
+        return this;
+    }
+
+    debugConsole() {
+        console.log(this.#resultStream)
         return this;
     }
 

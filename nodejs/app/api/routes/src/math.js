@@ -13,7 +13,7 @@ function routers() {
     const rpc = new JsonRpcRequester('http://127.0.0.1:6000');
     const basePolicy = {
         validTime: 10000,
-        timestampName: 'X-Timestamp',
+        timestampName: 'x-timestamp',
     } // need secretKey and identity
 
     // 요청
@@ -40,12 +40,13 @@ function routers() {
             }))
             .payload(req.body)
             .timestamp({
-                [basePolicy.timestampName]: req.header[basePolicy.timestampName]
+                [basePolicy.timestampName]: req.headers[basePolicy.timestampName]
             })
             .sign()
             
-            if(token.verify()){
-                resBody.success([req.body.numbers].reduce((n1, n2)=> n1 + n2))
+            if(token.verify(req.headers['authorization'])){
+                const result = [...req.body.numbers].reduce((n1, n2)=> n1 + n2)
+                resBody.success(result)
             } else {
                 resBody.error('invalid token')
             }
@@ -53,6 +54,8 @@ function routers() {
         }else{
             resBody.error('invalid request body or not exists user');
         }
+
+        res.send(resBody.json());
     });
 
     return router
