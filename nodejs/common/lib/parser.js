@@ -1,7 +1,3 @@
-function validate(target){
-    return new Validator(target);
-}
-
 class Validator {
 
     #target;
@@ -119,36 +115,12 @@ class Validator {
     }
 }
 
-class ResponseBody {
-
-    #resData
-
-    constructor(){
-        this.#resData = {
-            status: null,
-            data: null,
-            message: null,
-        }
-    }
-
-    error(message){
-        this.#resData.status = "error";
-        this.#resData.message = message;
-    }
-
-    success(data){
-        this.#resData.status = "success";
-        this.#resData.data = data;
-        this.#resData.message = 200;
-    }
-
-    json(){
-        return this.#resData;
-    }
-
+function validate(target){
+    return new Validator(target);
 }
+
+
 
 module.exports = {
     validate,
-    ResponseBody
 }
